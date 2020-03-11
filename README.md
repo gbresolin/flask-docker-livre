@@ -1,2 +1,3 @@
 # flask-book
-Python Project IPI
+Python Projet IPI : George Abed et Gregory Bresolin
+Création d'une boutique web sous FLASK sur le thème des livres
