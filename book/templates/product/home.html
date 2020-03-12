@@ -65,8 +65,9 @@
                 <h4 class="card-title">
                   <a href="#">{{ product['name'] }}</a>
                 </h4>
-                <h5>24.99 €</h5>
+                <h5>24.99 €</h5><span style="font-style: italic;color: darkcyan;">Très bon état</span>
                 <p class="card-text">{{ product['description'] | truncate(80) }}</p>
+                  <small class="text-muted">Vendu par {{ product['username']}}</small>
               </div>
               <div class="card-footer">
                 <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
