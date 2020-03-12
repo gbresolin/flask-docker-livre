@@ -2,6 +2,8 @@ import os
 
 from flask import Flask, render_template
 
+from book.db import get_db
+
 
 def create_app(test_config=None):
     # create and configure the app
@@ -29,9 +31,7 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    @app.route('/')
-    def home():
-        return render_template('home.html')
+
 
     @app.route('/about')
     def about():
@@ -42,5 +42,9 @@ def create_app(test_config=None):
 
     from . import auth
     app.register_blueprint(auth.bp)
+
+    from . import product
+    app.register_blueprint(product.bp)
+    app.add_url_rule('/', endpoint='home')
 
     return app

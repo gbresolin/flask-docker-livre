@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Products{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('product.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<p>Salut c'est toto</p>
+  {% for product in products %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ product['name'] }}</h1>
+          <div class="about">by {{ product['username'] }} on {{ product['created'].strftime('%Y-%m-%d') }}</div>
+        </div>
+        {% if g.user['id'] == product['author_id'] %}
+
+        {% endif %}
+      </header>
+      <p class="body">{{ product['description'] }}</p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
