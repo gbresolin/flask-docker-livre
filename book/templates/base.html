@@ -11,11 +11,11 @@
 
   <ul style="list-style-type: none">
     {% if g.user %}
-      <li><i class="fas fa-user"></i><span> Bonjour {{ g.user['username'] }}</span>
+      <li><i class="fas fa-user"></i> <span>Bonjour {{ g.user['username'] }}</span>
       <li><i class="fas fa-power-off"></i> <a href="{{ url_for('auth.logout') }}">Log Out</a>
     {% else %}
-      <li><a href="{{ url_for('auth.register') }}">Register</a>
-      <li><a href="{{ url_for('auth.login') }}">Log In</a>
+      <li><i class="fas fa-user-plus"></i> <a href="{{ url_for('auth.register') }}">Register</a>
+      <li><i class="fas fa-sign-in-alt"></i> <a href="{{ url_for('auth.login') }}">Log In</a>
     {% endif %}
   </ul>
 
@@ -47,16 +47,13 @@
     </div>
   </nav>
 
-  <header>
-    {% block header %}{% endblock %}
-  </header>
   {% for message in get_flashed_messages() %}
-  <div class="alert alert-danger" role="alert">{{ message }}</div>
+  <div class="col-sm-12">
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+  </div>
   {% endfor %}
 
     {% block content %}{% endblock %}
-
-
 
   <!-- Footer -->
   <footer class="py-5 bg-dark">
