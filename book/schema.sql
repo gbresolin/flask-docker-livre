@@ -13,6 +13,7 @@ CREATE TABLE product (
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   name TEXT NOT NULL,
   description TEXT NOT NULL,
-  price DECIMAL(4,2) NOT NULL,
+  price DECIMAL (4,2) NOT NULL,
+  state varchar (30) NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );

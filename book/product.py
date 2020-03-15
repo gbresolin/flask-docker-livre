@@ -13,7 +13,7 @@ bp = Blueprint('product', __name__)
 def index():
     db = get_db()
     products = db.execute(
-        'SELECT p.id, name, description, created, author_id, username'
+        'SELECT p.id, name, description, price, state, created, author_id, username'
         ' FROM product p JOIN user u ON p.author_id = u.id'
         ' ORDER BY created DESC'
     ).fetchall()
@@ -23,32 +23,36 @@ def index():
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
+    state_list = ['Neuf', 'Très bon état', 'Bon état']
+    category_list = ['Bandes dessinées', 'Humour']
     if request.method == 'POST':
         name = request.form['name']
         description = request.form['description']
+        price = request.form['price']
+        state = request.form['state']
         error = None
 
         if not name:
-            error = 'Name is required.'
+            error = 'Le nom du livre est obligatoire.'
 
         if error is not None:
             flash(error)
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO product (name, description, author_id)'
-                ' VALUES (?, ?, ?)',
-                (name, description, g.user['id'])
+                'INSERT INTO product (name, description, price, state, author_id)'
+                ' VALUES (?, ?, ?, ?, ?)',
+                (name, description, price, state, g.user['id'])
             )
             db.commit()
             return redirect(url_for('product.index'))
 
-    return render_template('product/create.html')
+    return render_template('product/create.html', state_list=state_list)
 
 
 def get_post(id, check_author=True):
     product = get_db().execute(
-        'SELECT p.id, name, description, created, author_id, username'
+        'SELECT p.id, name, description, price, state, created, author_id, username'
         ' FROM product p JOIN user u ON p.author_id = u.id'
         ' WHERE p.id = ?',
         (id,)

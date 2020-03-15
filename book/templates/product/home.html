@@ -8,15 +8,16 @@
 
   <!-- Page Content -->
   <div class="container">
-
+    <p class="lead">Sur BookShop, achetez et vendez vos livres neufs ou d'occasion !</p>
     <div class="row">
 
       <div class="col-lg-3">
 
-        <h1 class="my-4">Homepage</h1>
+        <h1 class="my-4">Tous les livres</h1>
+        <small class="text-muted">Trouvez le livre qu'il vous faut dans nos rubriques :</small>
         <div class="list-group">
-          <a href="#" class="list-group-item">Category 1</a>
-          <a href="#" class="list-group-item">Category 2</a>
+          <a href="#" class="list-group-item">Bandes dessinées</a>
+          <a href="#" class="list-group-item">Humour</a>
           <a href="#" class="list-group-item">Category 3</a>
         </div>
 
@@ -65,7 +66,7 @@
                 <h4 class="card-title">
                   <a href="#">{{ product['name'] }}</a>
                 </h4>
-                <h5>24.99 €</h5><span style="font-style: italic;color: darkcyan;">Très bon état</span>
+                <h5>{{ product['price'] }} €</h5><span style="font-style: italic;color: darkcyan;">{{ product['state'] }}</span>
                 <p class="card-text">{{ product['description'] | truncate(80) }}</p>
                   <small class="text-muted">Vendu par {{ product['username']}}</small>
               </div>

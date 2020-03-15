@@ -12,10 +12,12 @@
   <ul style="list-style-type: none">
     {% if g.user %}
       <li><i class="fas fa-user"></i> <span>Bonjour {{ g.user['username'] }}</span>
-      <li><i class="fas fa-power-off"></i> <a href="{{ url_for('auth.logout') }}">Log Out</a>
+      <li><i class="fas fa-plus-circle"></i> <a href="/create">Vendre un livre</a>
+      <li><i class="fas fa-shopping-cart"></i> <a href="/create">Mon panier</a>
+      <li><i class="fas fa-power-off"></i> <a href="{{ url_for('auth.logout') }}">Se déconnecter</a>
     {% else %}
-      <li><i class="fas fa-user-plus"></i> <a href="{{ url_for('auth.register') }}">Register</a>
-      <li><i class="fas fa-sign-in-alt"></i> <a href="{{ url_for('auth.login') }}">Log In</a>
+      <li><i class="fas fa-user-plus"></i> <a href="{{ url_for('auth.register') }}">S'enregistrer</a>
+      <li><i class="fas fa-sign-in-alt"></i> <a href="{{ url_for('auth.login') }}">Se connecter</a>
     {% endif %}
   </ul>
 
