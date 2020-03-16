@@ -30,9 +30,10 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/create">Vendre un livre</a>
-          <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Se déconnecter</a>
+            <a class="dropdown-item" href="/inventory">Mes livres en vente</a>
+          <a class="dropdown-item" href="#">Ajouter une catégorie</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Se déconnecter</a>
           </div>
           {% else %}
             <i class="fas fa-user"></i> Se connecter

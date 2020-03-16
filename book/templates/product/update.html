@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Modifier un livre{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-3">
+
+        <h1 class="my-4">Modifier un livre</h1>
+
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+
+  <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+          <div class="col">
+          <div class="col-sm-6">
+          <div class="form-group">
+            <label for="name">Nom</label>
+              <input name="name" id="name" value="{{ request.form['name'] or product['name'] }}" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea name="description" id="description" class="form-control">{{ request.form['description'] or product['description'] }}</textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Catégorie</label>
+              <select class="custom-select mr-sm-2" name="category" id="category">
+                {% for each in category_list %}
+                <option value="{{each}}">{{each}}</option>
+                {% endfor %}
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Prix</label>
+              <input type="number" name="price" id="price" value="{{ request.form['price'] or product['price'] }}" class="form-control" step="0.01" required>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Etat du Livre</label>
+              <select class="custom-select mr-sm-2" name="state" id="state">
+                {% for each in state_list %}
+                <option value="{{ request.form['state'] or product['state'] }}">{{each}}</option>
+                {% endfor %}
+              </select>
+          </div>
+
+        <div class="form-group">
+          <label>Select image</label>
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" name="image" id="image">
+            <label class="custom-file-label" for="image">Select image...</label>
+          </div>
+        </div>
+
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+          </div>
+      </form>
+  </div>
+
+        </div>
+        <!-- /.row -->
+
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+{% endblock %}
