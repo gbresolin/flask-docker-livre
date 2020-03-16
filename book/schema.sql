@@ -7,6 +7,11 @@ CREATE TABLE user (
   password TEXT NOT NULL
 );
 
+CREATE TABLE category (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL
+);
+
 CREATE TABLE product (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   author_id INTEGER NOT NULL,
@@ -16,4 +21,5 @@ CREATE TABLE product (
   price DECIMAL (4,2) NOT NULL,
   state varchar (30) NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
+  FOREIGN KEY (category_id) REFERENCES category (id)
 );

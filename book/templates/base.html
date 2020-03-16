@@ -9,18 +9,6 @@
 </head>
 <body>
 
-  <ul style="list-style-type: none">
-    {% if g.user %}
-      <li><i class="fas fa-user"></i> <span>Bonjour {{ g.user['username'] }}</span>
-      <li><i class="fas fa-plus-circle"></i> <a href="/create">Vendre un livre</a>
-      <li><i class="fas fa-shopping-cart"></i> <a href="/create">Mon panier</a>
-      <li><i class="fas fa-power-off"></i> <a href="{{ url_for('auth.logout') }}">Se déconnecter</a>
-    {% else %}
-      <li><i class="fas fa-user-plus"></i> <a href="{{ url_for('auth.register') }}">S'enregistrer</a>
-      <li><i class="fas fa-sign-in-alt"></i> <a href="{{ url_for('auth.login') }}">Se connecter</a>
-    {% endif %}
-  </ul>
-
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
@@ -35,16 +23,36 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if g.user %}
+            <i class="fas fa-user"></i> Bonjour {{ g.user['username'] }}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/create">Vendre un livre</a>
+          <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Se déconnecter</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+          {% else %}
+            <i class="fas fa-user"></i> Se connecter
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="btn btn-primary" style="margin-left:20px" href="{{ url_for('auth.login') }}">Se connecter</a>
+            <a class="dropdown-item" href="{{ url_for('auth.register') }}">Nouveau ? S'enregistrer</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+          {% endif %}
+        </li>
           <li class="nav-item">
-            <a class="nav-link" href="/about">A propos</a>
-          </li>
-          <li class="nav-item">
-             <a class="nav-link" href="#">Mon compte</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Mon panier</a>
+            <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Mon panier</a>
           </li>
         </ul>
+          <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Search">
+          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Rechercher</button>
+          </form>
       </div>
     </div>
   </nav>
@@ -61,6 +69,7 @@
   <footer class="py-5 bg-dark">
     <div class="container">
       <p class="m-0 text-center text-white">Copyright &copy; BookShop 2020</p>
+            <a class="nav-link text-center" href="/about">A propos</a>
     </div>
     <!-- /.container -->
   </footer>

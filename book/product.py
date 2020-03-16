@@ -28,6 +28,7 @@ def create():
     if request.method == 'POST':
         name = request.form['name']
         description = request.form['description']
+        category = request.form['category']
         price = request.form['price']
         state = request.form['state']
         error = None
