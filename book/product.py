@@ -1,7 +1,10 @@
+import os
+
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for,
-    session)
+    session, app)
 from werkzeug.exceptions import abort
+from werkzeug.utils import secure_filename
 
 from book.auth import login_required
 from book.db import get_db
@@ -24,7 +27,7 @@ def search():
 def index():
     db = get_db()
     products = db.execute(
-        'SELECT p.id, name, description, price, state, created, author_id, username'
+        'SELECT p.id, name, description, price, state, image, created, author_id, username'
         ' FROM product p JOIN user u ON p.author_id = u.id'
         ' ORDER BY created DESC'
     ).fetchall()
@@ -37,7 +40,7 @@ def inventory():
     user_id = session.get('user_id')
     db = get_db()
     products = db.execute(
-        'SELECT p.id, name, description, price, state, created, author_id, username'
+        'SELECT p.id, name, description, price, state, image, created, author_id, username'
         ' FROM product p JOIN user u ON p.author_id = u.id'
         ' WHERE author_id = ?'
         ' ORDER BY created DESC'
@@ -46,33 +49,7 @@ def inventory():
     return render_template('product/inventory.html', products=products)
 
 
-@bp.route('/create', methods=('GET', 'POST'))
-@login_required
-def create():
-    state_list = ['Neuf', 'Très bon état', 'Bon état']
-    if request.method == 'POST':
-        name = request.form['name']
-        description = request.form['description']
-        price = request.form['price']
-        state = request.form['state']
-        error = None
 
-        if not name:
-            error = 'Le nom du livre est obligatoire.'
-
-        if error is not None:
-            flash(error)
-        else:
-            db = get_db()
-            db.execute(
-                'INSERT INTO product (name, description, price, state, author_id)'
-                ' VALUES (?, ?, ?, ?, ?)',
-                (name, description, price, state, g.user['id'])
-            )
-            db.commit()
-            return redirect(url_for('product.index'))
-
-    return render_template('product/create.html', state_list=state_list)
 
 
 def get_post(id, check_author=True):
@@ -90,6 +67,7 @@ def get_post(id, check_author=True):
         abort(403)
 
     return product
+
 
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required

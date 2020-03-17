@@ -1,8 +1,9 @@
 import os
 
-from flask import Flask, flash, render_template, request
+from flask import Flask, flash, render_template, request, g, url_for
 from werkzeug.utils import redirect, secure_filename
 
+from book.auth import login_required
 from book.db import get_db
 
 
@@ -70,9 +71,11 @@ def create_app(test_config=None):
         else:
             return False
 
-    @app.route("/upload-image", methods=["GET", "POST"])
-    def upload_image():
-        if request.method == "POST":
+    @app.route('/create', methods=('GET', 'POST'))
+    @login_required
+    def create():
+        state_list = ['Neuf', 'Très bon état', 'Bon état']
+        if request.method == 'POST':
 
             if request.files:
 
@@ -90,17 +93,35 @@ def create_app(test_config=None):
 
                     if allowed_image(image.filename):
                         filename = secure_filename(image.filename)
+                        ext = filename.rsplit(".", 1)[1]
+                        new_filename = "upload.{}".format(ext)
 
-                        image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                        image.save(os.path.join(app.config["IMAGE_UPLOADS"], new_filename))
 
                         print("Image saved")
 
-                        return redirect(request.url)
+            name = request.form['name']
+            description = request.form['description']
+            price = request.form['price']
+            state = request.form['state']
 
-                    else:
-                        print("That file extension is not allowed")
-                        return redirect(request.url)
+            error = None
 
-        return render_template("upload_image.html")
+            if not name:
+                error = 'Le nom du livre est obligatoire.'
+
+            if error is not None:
+                flash(error)
+            else:
+                db = get_db()
+                db.execute(
+                    'INSERT INTO product (name, description, price, state, image, author_id)'
+                    ' VALUES (?, ?, ?, ?, ?, ?)',
+                    (name, description, price, state, new_filename, g.user['id'])
+                )
+                db.commit()
+                return redirect(url_for('product.index'))
+
+        return render_template('product/create.html', state_list=state_list)
 
     return app
