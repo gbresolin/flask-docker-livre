@@ -25,6 +25,18 @@ def search():
     return render_template('product/search.html', searches=searches)
 
 
+@bp.route('/<int:id>/detail', methods=('GET', 'POST'))
+def detail(id):
+    db = get_db()
+    details = db.execute(
+        'SELECT p.id, name, description, price, state, image, created, author_id, username'
+        ' FROM product p JOIN user u ON p.author_id = u.id'
+        ' WHERE p.id = ?',
+        (id,)
+    ).fetchall()
+    return render_template('product/detail.html', details=details, title=id)
+
+
 @bp.route('/')
 def index():
     db = get_db()
@@ -73,6 +85,8 @@ def get_post(id, check_author=True):
 def update(id):
     product = get_post(id)
 
+    state_list = ['Neuf', 'Très bon état', 'Bon état', 'Etat correct', 'Mauvais état']
+
     if request.method == 'POST':
         name = request.form['name']
         description = request.form['description']
@@ -88,14 +102,15 @@ def update(id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE post SET name = ?, description = ?, price = ?, state = ?'
+                'UPDATE product SET name = ?, description = ?, price = ?, state = ?'
                 ' WHERE id = ?',
                 (name, description, price, state, id)
             )
             db.commit()
+            flash('Modification réussie !', 'success')
             return redirect(url_for('product.inventory'))
 
-    return render_template('product/update.html', product=product)
+    return render_template('product/update.html', product=product, state_list=state_list)
 
 
 @bp.route('/<int:id>/delete', methods=('POST',))

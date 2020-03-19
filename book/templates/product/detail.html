@@ -1,0 +1,79 @@
+{# app/templates/about.html #}
+
+{% extends 'base.html' %}
+
+{% block title %}Détail Livre {{ title }}{% endblock %}
+
+{% block content %}
+
+  <!-- Page Content -->
+  <div class="container">
+    <p class="lead">Sur BookShop, achetez et vendez vos livres neufs ou d'occasion !</p>
+    <div class="row">
+
+      <div class="col-lg-3">
+
+          {% for product in details %}
+        <h1 class="my-4">{{ product['name'] }}</h1>
+        <small class="text-muted">Trouvez le livre qu'il vous faut dans nos rubriques :</small>
+        <div class="list-group">
+          <a href="#" class="list-group-item">Bandes dessinées</a>
+          <a href="#" class="list-group-item">Humour</a>
+          <a href="#" class="list-group-item">Category 3</a>
+        </div>
+
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+        <div class="card mt-4">
+        <div class="card-body">
+          {% if product['image'] %}
+          <img class="card-img-top" src="/static/uploads/{{ product['image'] }}" alt="">
+          {% else %}
+          <img class="card-img-top" src="http://placehold.it/900x400" alt="">
+          {% endif %}
+            <h3 class="card-title">{{ product['name'] }}</h3>
+            <h4>{{ product['price'] }} €</h4>
+            <p class="card-text">{{ product['description'] }}</p>
+            <small class="text-muted">Vendeur : {{ product['username']}}</small>
+            <br />
+            <span class="text-warning">★ ★ ★ ★ ☆</span>
+            4.0 stars
+          </div>
+            <button class="btn btn-success" type="submit"><i class="fas fa-shopping-cart"></i> Ajouter au panier</button>
+        </div>
+        <!-- /.card -->
+
+        <div class="card card-outline-secondary my-4">
+          <div class="card-header">
+            Product Reviews
+          </div>
+          <div class="card-body">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+            <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+            <hr>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+            <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+            <hr>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+            <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+            <hr>
+            <a href="#" class="btn btn-success">Leave a Review</a>
+          </div>
+        </div>
+        <!-- /.card -->
+          {% if not loop.last %}
+          {% endif %}
+          {% endfor %}
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+
+{% endblock %}

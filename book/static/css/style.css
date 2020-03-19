@@ -6,3 +6,11 @@
 body {
   padding-top: 56px;
 }
+.card-img-top {
+    width: 200px;
+    height: 250px;
+}
+
+.card {
+    text-align:center
+}
