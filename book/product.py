@@ -12,13 +12,15 @@ from book.db import get_db
 bp = Blueprint('product', __name__)
 
 
-@bp.route('/search')
+@bp.route('/search', methods=['GET', 'POST'])
 def search():
+    query = "%" + request.args['q'] + "%"
+
     db = get_db()
     searches = db.execute(
         'SELECT *'
         ' FROM product p JOIN user u ON p.author_id = u.id'
-        ' where name = %s', request.form['search']
+        ' where name like ? OR description like ?', (query, query,)
     ).fetchall()
     return render_template('product/search.html', searches=searches)
 

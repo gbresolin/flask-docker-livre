@@ -75,7 +75,7 @@ def create_app(test_config=None):
     @app.route('/create', methods=('GET', 'POST'))
     @login_required
     def create():
-        state_list = ['Neuf', 'Très bon état', 'Bon état']
+        state_list = ['Neuf', 'Très bon état', 'Bon état', 'Etat correct', 'Mauvais état']
         if request.method == 'POST':
 
             if request.files:
@@ -168,5 +168,11 @@ def create_app(test_config=None):
                         return redirect(request.url)
 
         return render_template("upload_image.html")
+
+    # Errors
+    @app.errorhandler(404)
+    def not_found(e):
+
+        return render_template("404.html"), 404
 
     return app
