@@ -161,7 +161,7 @@ def create_app(test_config=None):
 
                         print("Image saved")
 
-                        return redirect(request.url)
+                        return redirect(request.base_url)
 
                     else:
                         print("That file extension is not allowed")
