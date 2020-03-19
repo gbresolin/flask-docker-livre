@@ -5,6 +5,7 @@ from werkzeug.utils import redirect, secure_filename
 
 from book.auth import login_required
 from book.db import get_db
+from datetime import datetime
 
 
 def create_app(test_config=None):
@@ -94,7 +95,9 @@ def create_app(test_config=None):
                     if allowed_image(image.filename):
                         filename = secure_filename(image.filename)
                         ext = filename.rsplit(".", 1)[1]
-                        new_filename = "upload.{}".format(ext)
+                        date = datetime.now()
+                        date = date.strftime('%d%m%Y%M%S')
+                        new_filename = "book_" + date + ".{}".format(ext)
 
                         image.save(os.path.join(app.config["IMAGE_UPLOADS"], new_filename))
 
@@ -104,6 +107,10 @@ def create_app(test_config=None):
             description = request.form['description']
             price = request.form['price']
             state = request.form['state']
+            ext = filename.rsplit(".", 1)[1]
+            date = datetime.now()
+            date = date.strftime('%d%m%Y%M%S')
+            img = "book_" + date + ".{}".format(ext)
 
             error = None
 
@@ -117,11 +124,49 @@ def create_app(test_config=None):
                 db.execute(
                     'INSERT INTO product (name, description, price, state, image, author_id)'
                     ' VALUES (?, ?, ?, ?, ?, ?)',
-                    (name, description, price, state, new_filename, g.user['id'])
+                    (name, description, price, state, img, g.user['id'])
                 )
                 db.commit()
                 return redirect(url_for('product.index'))
 
         return render_template('product/create.html', state_list=state_list)
+
+    @app.route("/upload-image", methods=["GET", "POST"])
+    def upload_image():
+
+        if request.method == "POST":
+
+            if request.files:
+
+                if "filesize" in request.cookies:
+
+                    if not allowed_image_filesize(request.cookies["filesize"]):
+                        print("Filesize exceeded maximum limit")
+                        return redirect(request.url)
+
+                    image = request.files["image"]
+
+                    if image.filename == "":
+                        print("No filename")
+                        return redirect(request.url)
+
+                    if allowed_image(image.filename):
+                        filename = secure_filename(image.filename)
+                        ext = filename.rsplit(".", 1)[1]
+                        date = datetime.now()
+                        date = date.strftime('%d%m%Y%M%S')
+                        new_filename = "book_" + date + ".{}".format(ext)
+
+                        image.save(os.path.join(app.config["IMAGE_UPLOADS"], new_filename))
+
+                        print("Image saved")
+
+                        return redirect(request.url)
+
+                    else:
+                        print("That file extension is not allowed")
+                        return redirect(request.url)
+
+        return render_template("upload_image.html")
 
     return app
