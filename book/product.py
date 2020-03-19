@@ -49,9 +49,6 @@ def inventory():
     return render_template('product/inventory.html', products=products)
 
 
-
-
-
 def get_post(id, check_author=True):
     product = get_db().execute(
         'SELECT p.id, name, description, price, state, created, author_id, username'
@@ -97,3 +94,14 @@ def update(id):
             return redirect(url_for('product.inventory'))
 
     return render_template('product/update.html', product=product)
+
+
+@bp.route('/<int:id>/delete', methods=('POST',))
+@login_required
+def delete(id):
+    get_post(id)
+    db = get_db()
+    db.execute('DELETE FROM product WHERE id = ?', (id,))
+    db.commit()
+    flash('Livre supprimé de votre boutique !', 'success')
+    return redirect(url_for('product.inventory'))
