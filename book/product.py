@@ -22,6 +22,8 @@ def search():
         ' FROM product p JOIN user u ON p.author_id = u.id'
         ' where name like ? OR description like ?', (query, query,)
     ).fetchall()
+    if not searches:
+        flash('Pas de résultats trouvés !', 'danger')
     return render_template('product/search.html', searches=searches)
 
 
