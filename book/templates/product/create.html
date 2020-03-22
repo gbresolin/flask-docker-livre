@@ -35,8 +35,8 @@
           <div class="form-group">
             <label for="price">Catégorie</label>
               <select class="custom-select mr-sm-2" name="category" id="category">
-                {% for each in category_list %}
-                <option value="{{each}}">{{each}}</option>
+                {% for category in categories %}
+                <option value="{{ category['id'] }}">{{ category['name'] }}</option>
                 {% endfor %}
               </select>
           </div>

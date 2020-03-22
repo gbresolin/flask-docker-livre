@@ -81,6 +81,14 @@ def create_app(test_config=None):
     @login_required
     def create():
         state_list = ['Neuf', 'Très bon état', 'Bon état', 'Etat correct', 'Mauvais état']
+
+        db = get_db()
+        categories = db.execute(
+            'SELECT c.id, name, author_id'
+            ' FROM category c JOIN user u ON c.author_id = u.id'
+            ' ORDER BY name DESC'
+        ).fetchall()
+
         if request.method == 'POST':
 
             if request.files:
@@ -134,7 +142,7 @@ def create_app(test_config=None):
                 db.commit()
                 return redirect(url_for('product.index'))
 
-        return render_template('product/create.html', state_list=state_list)
+        return render_template('product/create.html', state_list=state_list, categories=categories)
 
     @app.route("/upload-image", methods=["GET", "POST"])
     def upload_image():

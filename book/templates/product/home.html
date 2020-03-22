@@ -18,8 +18,6 @@
         <div class="list-group">
           {% for category in categories %}
           <a href="#" class="list-group-item">{{ category['name'] }}</a>
-          {% if not loop.last %}
-          {% endif %}
           {% endfor %}
         </div>
 
