@@ -51,7 +51,6 @@ def create_app(test_config=None):
 
     from . import product
     app.register_blueprint(category.bp)
-    app.add_url_rule('/', endpoint='home')
 
     app.config["IMAGE_UPLOADS"] = "book/static/uploads"
     app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
@@ -116,14 +115,18 @@ def create_app(test_config=None):
 
                         print("Image saved")
 
-            name = request.form['name']
-            description = request.form['description']
-            price = request.form['price']
-            state = request.form['state']
+            picture = request.files["image"]
+            filename = secure_filename(picture.filename)
             ext = filename.rsplit(".", 1)[1]
             date = datetime.now()
             date = date.strftime('%d%m%Y%M%S')
             img = "book_" + date + ".{}".format(ext)
+
+            name = request.form['name']
+            description = request.form['description']
+            price = request.form['price']
+            state = request.form['state']
+            category = request.form['category']
 
             error = None
 
@@ -135,9 +138,9 @@ def create_app(test_config=None):
             else:
                 db = get_db()
                 db.execute(
-                    'INSERT INTO product (name, description, price, state, image, author_id)'
-                    ' VALUES (?, ?, ?, ?, ?, ?)',
-                    (name, description, price, state, img, g.user['id'])
+                    'INSERT INTO product (name, description, category_id, price, state, image, author_id)'
+                    ' VALUES (?, ?, ?, ?, ?, ?, ?)',
+                    (name, description, category, price, state, img, g.user['id'])
                 )
                 db.commit()
                 return redirect(url_for('product.index'))
