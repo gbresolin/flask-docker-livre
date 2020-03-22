@@ -13,9 +13,9 @@ bp = Blueprint('category', __name__)
 def index():
     db = get_db()
     categories = db.execute(
-        'SELECT c.id, name'
-        ' FROM category'
-        ' ORDER BY created DESC'
+        'SELECT c.id, name, author_id'
+        ' FROM category c JOIN user u ON c.author_id = u.id'
+        ' ORDER BY name DESC'
     ).fetchall()
     return render_template('product/home.html', categories=categories)
 
@@ -35,14 +35,14 @@ def create():
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO category (name)'
-                ' VALUES (?, ?, ?, ?, ?)',
-                (name)
+                'INSERT INTO category (name, author_id)'
+                ' VALUES (?, ?)',
+                (name, g.user['id'])
             )
             db.commit()
-            return redirect(url_for('product.index'))
+            return redirect(url_for('product.inventory'))
 
-    return render_template('product/create.html', state_list=state_list)
+    return render_template('category/create.html')
 
 
 def get_post(id, check_author=True):

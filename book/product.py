@@ -122,5 +122,5 @@ def delete(id):
     db = get_db()
     db.execute('DELETE FROM product WHERE id = ?', (id,))
     db.commit()
-    flash('Livre supprimé de votre boutique !', 'success')
+    flash('Livre supprimé !', 'success')
     return redirect(url_for('product.inventory'))

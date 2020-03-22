@@ -24,7 +24,7 @@
           <div class="col">
           <div class="col-sm-6">
           <div class="form-group">
-            <label for="name">Nom</label>
+            <label for="name">Nom du livre</label>
               <input name="name" id="name" value="{{ request.form['name'] }}" class="form-control" required>
           </div>
           <div class="form-group">
@@ -56,10 +56,10 @@
           </div>
 
         <div class="form-group">
-          <label>Select image</label>
+          <label>Choisir une image</label>
           <div class="custom-file">
             <input type="file" class="custom-file-input" name="image" id="image" value="{{ request.files['image'] }}" oninput="">
-            <label class="custom-file-label" for="image">Select image...</label>
+            <label class="custom-file-label" for="image">Choisir une image...</label>
           </div>
         </div>
 

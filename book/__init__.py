@@ -3,6 +3,7 @@ import os
 from flask import Flask, flash, render_template, request, g, url_for
 from werkzeug.utils import redirect, secure_filename
 
+from book import category
 from book.auth import login_required
 from book.db import get_db
 from datetime import datetime
@@ -46,6 +47,10 @@ def create_app(test_config=None):
 
     from . import product
     app.register_blueprint(product.bp)
+    app.add_url_rule('/', endpoint='home')
+
+    from . import product
+    app.register_blueprint(category.bp)
     app.add_url_rule('/', endpoint='home')
 
     app.config["IMAGE_UPLOADS"] = "book/static/uploads"
