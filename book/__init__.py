@@ -49,7 +49,7 @@ def create_app(test_config=None):
     app.register_blueprint(product.bp)
     app.add_url_rule('/', endpoint='home')
 
-    from . import product
+    from . import category
     app.register_blueprint(category.bp)
 
     app.config["IMAGE_UPLOADS"] = "book/static/uploads"

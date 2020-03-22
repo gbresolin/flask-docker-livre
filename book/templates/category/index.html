@@ -1,0 +1,70 @@
+{# app/templates/about.html #}
+
+{% extends 'base.html' %}
+
+{% block title %}BookShop : Mes catégories ajoutées{% endblock %}
+
+{% block content %}
+
+  <!-- Page Content -->
+  <div class="container">
+    <p class="lead">Sur BookShop, achetez et vendez vos livres neufs ou d'occasion !</p>
+    <div class="row">
+
+      <div class="col-lg-3">
+
+        <h1 class="my-4">Mes catégories</h1>
+        <small class="text-muted">Retrouvez ici toutes vos catégories :</small>
+
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+        <br /><br />
+
+        <div class="row">
+
+        <div class="col">
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for category in categories %}
+                <tr>
+                  <th scope="row">{{ category['id'] }}</th>
+                  <td>{{ category['name'] }}</td>
+                  <td>
+                      <form action="{{ url_for('category.delete', id=category['id']) }}" method="post">
+                      <a role="button" class="btn btn-primary btn-sm mb-2" href="#" class="btn btn-danger"><i class="fas fa-edit"></i></a>
+                      <input class="btn btn-danger btn-sm mb-2" type="submit" value="Supprimer" onclick="return confirm('Are you sure?');">
+                      </form>
+                  </td>
+                </tr>
+              {% if not loop.last %}
+              {% endif %}
+              {% endfor %}
+              </tbody>
+            </table>
+
+          </div>
+
+        </div>
+        <!-- /.row -->
+
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+
+{% endblock %}
