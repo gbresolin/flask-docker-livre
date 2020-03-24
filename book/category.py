@@ -31,6 +31,18 @@ def all():
     return render_template('category/index.html', categories=categories)
 
 
+@bp.route('/<int:id>/category', methods=('GET', 'POST'))
+def detail(id):
+    db = get_db()
+    details = db.execute(
+        'SELECT *'
+        ' FROM product JOIN category ON product.category_id = category.id'
+        ' WHERE category_id = ?',
+        (id,)
+    ).fetchall()
+    return render_template('category/detail.html', details=details, title=id)
+
+
 def get_cat(id, check_author=True):
     product = get_db().execute(
         'SELECT c.id, name, author_id'
