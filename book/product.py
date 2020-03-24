@@ -24,7 +24,7 @@ def search():
     ).fetchall()
     if not searches:
         flash('Pas de résultats trouvés pour ' + query.replace("%", ""), 'danger')
-    return render_template('product/search.html', searches=searches)
+    return render_template('product/search.html', searches=searches, query=query.replace("%", ""))
 
 
 @bp.route('/<int:id>/detail', methods=('GET', 'POST'))

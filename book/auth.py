@@ -22,6 +22,12 @@ def register():
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
+        elif len(password) < 5:
+            error = 'Password too short.'
+        elif not password.isdigit():
+            error = 'Make sure your password has a number in it.'
+        elif not password.isupper():
+            error = 'Make sure your password has a capital letter in it.'
         elif db.execute(
                 'SELECT id FROM user WHERE username = ?', (username,)
         ).fetchone() is not None:
