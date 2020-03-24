@@ -23,7 +23,7 @@ def search():
         ' where name like ? OR description like ?', (query, query,)
     ).fetchall()
     if not searches:
-        flash('Pas de résultats trouvés !', 'danger')
+        flash('Pas de résultats trouvés pour ' + query.replace("%", ""), 'danger')
     return render_template('product/search.html', searches=searches)
 
 
@@ -65,7 +65,7 @@ def inventory():
     return render_template('product/inventory.html', products=products)
 
 
-def get_post(id, check_author=True):
+def get_product(id, check_author=True):
     product = get_db().execute(
         'SELECT p.id, name, description, price, state, created, author_id, username'
         ' FROM product p JOIN user u ON p.author_id = u.id'
@@ -74,7 +74,7 @@ def get_post(id, check_author=True):
     ).fetchone()
 
     if product is None:
-        abort(404, "Product id {0} doesn't exist.".format(id))
+        abort(404, "Le produit id {0} n'existe pas.".format(id))
 
     if check_author and product['author_id'] != g.user['id']:
         abort(403)
@@ -85,7 +85,7 @@ def get_post(id, check_author=True):
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
 def update(id):
-    product = get_post(id)
+    product = get_product(id)
 
     state_list = ['Neuf', 'Très bon état', 'Bon état', 'Etat correct', 'Mauvais état']
 
@@ -118,7 +118,7 @@ def update(id):
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
 def delete(id):
-    get_post(id)
+    get_product(id)
     db = get_db()
     db.execute('DELETE FROM product WHERE id = ?', (id,))
     db.commit()
