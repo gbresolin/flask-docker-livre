@@ -1,4 +1,5 @@
 import functools
+import re
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -22,11 +23,11 @@ def register():
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
-        elif len(password) < 5:
+        elif len(password) < 6:
             error = 'Password too short.'
-        elif not password.isdigit():
+        elif re.search('[0-9]', password) is None:
             error = 'Make sure your password has a number in it.'
-        elif not password.isupper():
+        elif re.search('[A-Z]', password) is None:
             error = 'Make sure your password has a capital letter in it.'
         elif db.execute(
                 'SELECT id FROM user WHERE username = ?', (username,)
@@ -39,6 +40,7 @@ def register():
                 (username, generate_password_hash(password))
             )
             db.commit()
+            flash('Compté créé ! Vous pouvez vous connecter.', 'success')
             return redirect(url_for('auth.login'))
 
         flash(error, 'danger')
