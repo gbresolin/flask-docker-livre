@@ -1,0 +1,5 @@
+docker build --tag flask-docker-livre-app .
+docker images
+docker run --name flask-docker-livre-app -p 5000:5000 flask-docker-livre-app
+docker save -o C:\Users\Utilisateur\pictures\flask-livre.tar flask-docker-livre-app
+docker stop flask-docker-livre-app
